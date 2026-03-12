@@ -23,6 +23,11 @@ from .model_misc import (
     inverse_sigmoid,
     MLP,
 )
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device_type = "cuda" if "cuda" in str(device) else "cpu"
+
+have_cuda: bool = True if device_type == "cuda" else False
+
 
 
 class TransformerDecoderLayer(nn.Module):
@@ -68,7 +73,7 @@ class TransformerDecoderLayer(nn.Module):
         return tensor if pos is None else tensor + pos
 
     def forward_ffn(self, tgt):
-        with torch.amp.autocast(device_type="cuda", enabled=False):
+        with torch.amp.autocast(device_type=device_type, enabled=False):
             tgt2 = self.linear2(self.dropout3(self.activation(self.linear1(tgt))))
         tgt = tgt + self.dropout4(tgt2)
         tgt = self.norm3(tgt)
