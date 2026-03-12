@@ -467,7 +467,7 @@ class TransformerDecoder(nn.Module):
                     )
                 )
                 reference_boxes = reference_boxes.repeat(2, 1, 1)
-
+                reference_boxes.to(device)
         bs = tgt.shape[1]
         intermediate = []
         intermediate_presence_logits = []
@@ -483,6 +483,7 @@ class TransformerDecoder(nn.Module):
                     else reference_boxes.repeat(1, bs, 1)
                 )
                 reference_boxes = reference_boxes.sigmoid()
+                reference_boxes.to(device)
             intermediate_ref_boxes = [reference_boxes]
         else:
             reference_boxes = None
