@@ -27,6 +27,7 @@ from tqdm.auto import tqdm
 logger = get_logger(__name__)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 device_type = "cuda" if "cuda" in str(device) else "cpu"
+have_cuda: bool = True if device_type == "cuda" else False
 
 class Sam3VideoInference(Sam3VideoBase):
     TEXT_ID_FOR_TEXT = 0
